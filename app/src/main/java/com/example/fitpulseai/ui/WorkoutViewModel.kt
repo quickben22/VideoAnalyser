@@ -11,11 +11,9 @@ import com.example.fitpulseai.data.SummaryPhase
 import com.example.fitpulseai.data.factualWorkName
 import com.example.fitpulseai.data.scheduleSummary
 import com.example.fitpulseai.data.summaryStatus
+import com.example.fitpulseai.data.toTrainerReport
 import com.example.fitpulseai.domain.*
-import com.example.fitpulseai.vision.LandmarkSmoother
-import com.example.fitpulseai.vision.visible
 import com.google.firebase.FirebaseApp
-import com.google.mlkit.vision.pose.PoseLandmark as L
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,6 +33,7 @@ data class WorkoutState(
     val exercise: ExerciseType = ExerciseType.IDLE,
     val summary: WorkoutTelemetry? = null,
     val report: FactualSummary? = null,
+    val trainerReport: String? = null,
     val summaryStatus: SummaryStatus = SummaryStatus(SummaryPhase.PENDING),
     val error: String? = null,
     val saving: Boolean = false
@@ -44,11 +43,9 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     private val storage = LocalSessionStorage(application)
     private val _state = MutableStateFlow(WorkoutState())
     val state: StateFlow<WorkoutState> = _state.asStateFlow()
-    private var smoother = LandmarkSmoother()
-    private var detector = ExerciseDetector()
-    private var aggregator: SessionAggregator? = null
-    private var startedMs: Long? = null
+    private var recorder = SessionRecorder()
     private var reportJob: kotlinx.coroutines.Job? = null
+    private var trainerReportJob: kotlinx.coroutines.Job? = null
     val firebaseConfigured = FirebaseApp.getApps(application).isNotEmpty()
 
     init {
@@ -56,7 +53,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
             try {
                 val id = storage.latestSession.first()
                 val saved = id?.let { storage.telemetry(it).first() }
-                if (saved != null && startedMs == null && _state.value.summary == null) {
+                if (saved != null && recorder.startedAtMs == null && _state.value.summary == null) {
                     showSummary(saved)
                 }
             } catch (e: CancellationException) {
@@ -68,32 +65,20 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         viewModelScope.launch {
             while (true) {
                 delay(500)
-                startedMs?.let { start -> _state.update { it.copy(elapsed = (SystemClock.elapsedRealtime() - start) / 1000) } }
+                recorder.startedAtMs?.let { start -> _state.update { it.copy(elapsed = (SystemClock.elapsedRealtime() - start) / 1000) } }
             }
         }
     }
 
     fun onFrame(raw: PoseFrame) {
         if (_state.value.summary != null || _state.value.saving) return
-        val frame = smoother.smooth(raw)
-        val calibrated = listOf(L.LEFT_SHOULDER, L.RIGHT_SHOULDER, L.LEFT_ANKLE, L.RIGHT_ANKLE).all { frame.visible(it) != null }
-        if (startedMs == null && calibrated) {
-            startedMs = frame.timestampMs
-            aggregator = SessionAggregator(frame.timestampMs)
-        }
-        val reps = if (calibrated && aggregator != null) detector.process(frame) else {
-            detector = ExerciseDetector()
-            emptyList()
-        }
-        reps.forEach { aggregator?.add(it) }
-        _state.update { it.copy(frame = frame, calibrated = calibrated, started = startedMs != null, reps = aggregator?.count ?: 0, exercise = reps.lastOrNull()?.exercise ?: it.exercise) }
+        val outcome = recorder.onFrame(raw)
+        _state.update { it.copy(frame = outcome.frame, calibrated = outcome.calibrated, started = outcome.started, reps = outcome.reps, exercise = outcome.exercise ?: it.exercise) }
     }
 
     fun finish() {
-        val session = aggregator ?: return
-        val telemetry = session.finish(SystemClock.elapsedRealtime())
-        startedMs = null
-        aggregator = null
+        val telemetry = recorder.finish(SystemClock.elapsedRealtime()) ?: return
+        recorder.reset()
         _state.update { it.copy(saving = true) }
         viewModelScope.launch {
             try {
@@ -109,6 +94,18 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 
     private fun showSummary(telemetry: WorkoutTelemetry) {
         _state.update { it.copy(summary = telemetry, saving = false) }
+        trainerReportJob?.cancel()
+        trainerReportJob = viewModelScope.launch {
+            try {
+                storage.trainerReport(telemetry.sessionId).collect { text ->
+                    _state.update { it.copy(trainerReport = text) }
+                }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                error("Could not load saved report: ${e.localizedMessage}")
+            }
+        }
         reportJob?.cancel()
         reportJob = viewModelScope.launch {
             val work = WorkManager.getInstance(getApplication())
@@ -127,6 +124,23 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                 throw e
             } catch (e: Exception) {
                 _state.update { it.copy(summaryStatus = SummaryStatus(SummaryPhase.FAILED, "Could not load summary: ${e.localizedMessage}")) }
+            }
+        }
+    }
+
+    /** Generates the deterministic trainer-style report from the recorded session data. */
+    fun generateReport() {
+        val telemetry = _state.value.summary ?: return
+        if (_state.value.trainerReport != null) return
+        viewModelScope.launch {
+            try {
+                val text = telemetry.toTrainerReport()
+                storage.saveTrainerReport(telemetry.sessionId, text)
+                _state.update { it.copy(trainerReport = text) }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                error("Could not generate report: ${e.localizedMessage}")
             }
         }
     }
@@ -150,10 +164,8 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 
     fun newWorkout() {
         reportJob?.cancel()
-        smoother = LandmarkSmoother()
-        detector = ExerciseDetector()
-        aggregator = null
-        startedMs = null
+        trainerReportJob?.cancel()
+        recorder.reset()
         _state.value = WorkoutState()
     }
 

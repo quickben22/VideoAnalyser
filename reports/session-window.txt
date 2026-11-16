@@ -1,0 +1,59 @@
+FitPulse AI - session summary
+========================================
+Source            : workout.mp4
+Sampling          : 12.5 fps
+Duration          : 02:20
+Total detections  : 12
+
+Exercise breakdown
+----------------------------------------
+Squat                 5   both sides, counted per repetition
+   knee bend avg 105.7 deg from straight
+Punch (jab/cross)     3   left   2 / right   1
+   peak elbow angle avg 178.3 deg
+Push-up               3   both sides, counted per repetition
+   elbow extension avg 171.6 deg
+High knee             1   left   1 / right   0
+   peak elevation avg 0.0 torso lengths
+
+What the camera saw
+----------------------------------------
+00:00-00:11  Standing work
+00:50-01:12  Standing work
+01:13-02:04  Standing work
+02:05-02:09  Standing work
+02:10-02:20  Standing work
+
+Recorded blocks
+----------------------------------------
+00:09-00:17  Squat              2 (both)
+00:18-00:18  Punch (jab/cross)  1 (L1/R0)
+00:31-00:40  Push-up            3 (both)
+00:57-00:57  Punch (jab/cross)  1 (L0/R1)
+01:11-01:11  Punch (jab/cross)  1 (L1/R0)
+01:31-01:37  Squat              2 (both)
+02:03-02:03  Squat              1 (both)
+02:04-02:04  High knee          1 (L1/R0)
+
+Asymmetries
+----------------------------------------
+None flagged (needs 10+ degrees of side kick difference).
+
+Diagnostics
+----------------------------------------
+Frames decoded      : 13501
+Frames analysed     : 1751 (12.5 fps target)
+Pose found          : 1729
+Calibrated frames   : 1284
+Accepted by gate    : 1285
+Rejected by gate    : 486 (scale or subject jump)
+Subject switches    : 20
+Analysed up to      : 540000ms
+Landmark count      : [33]
+Nose landmarks      : [1]
+
+Notes
+----------------------------------------
+Counts are heuristic motion detections from an in-memory pose model, not a validated
+fitness measurement. In a group video the app follows one person at a time.
+No video or images leave the device; nothing here is advice.

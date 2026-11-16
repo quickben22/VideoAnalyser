@@ -1,0 +1,113 @@
+FitPulse AI - session summary
+========================================
+Source            : workout.mp4
+Sampling          : 12.5 fps
+Duration          : 23:41
+Total detections  : 105
+
+Exercise breakdown
+----------------------------------------
+Punch (jab/cross)    58   left  26 / right  32
+   peak elbow angle avg 170.8 deg
+Jumping jack         11   both sides, counted per repetition
+   ankle spread avg 1.2 torso widths
+Squat                 7   both sides, counted per repetition
+   knee bend avg 78.0 deg from straight
+High knee            20   left  12 / right   8
+   peak elevation avg 0.1 torso lengths
+Push-up               9   both sides, counted per repetition
+   elbow extension avg 167.9 deg
+
+What the camera saw
+----------------------------------------
+00:00-05:04  Standing work
+05:06-06:32  Standing work
+07:13-07:34  Standing work
+07:35-08:27  Standing work
+08:28-08:32  Standing work
+08:33-10:01  Standing work
+10:05-10:11  Standing work
+10:19-10:26  Bent over / transition
+10:50-10:57  Floor work (plank / push-up position)
+11:02-11:47  Standing work
+11:49-12:07  Standing work
+12:08-12:55  Floor work (plank / push-up position)
+13:00-14:09  Standing work
+14:12-14:29  Standing work
+14:29-16:29  Floor work (plank / push-up position)
+16:35-16:42  Floor work (plank / push-up position)
+16:43-16:52  Standing work
+16:54-17:00  Floor work (plank / push-up position)
+17:00-17:07  Standing work
+17:13-17:18  Standing work
+17:27-17:31  Standing work
+17:40-18:05  Standing work
+18:11-18:34  Standing work
+18:34-20:24  Floor work (plank / push-up position)
+20:31-20:37  Floor work (plank / push-up position)
+20:37-20:42  Standing work
+20:52-20:59  Standing work
+21:05-21:27  Floor work (plank / push-up position)
+21:28-22:01  Standing work
+22:10-22:44  Standing work
+22:44-22:53  Floor work (plank / push-up position)
+22:53-23:08  Standing work
+23:09-23:15  Floor work (plank / push-up position)
+23:25-23:36  Standing work
+
+Recorded blocks
+----------------------------------------
+00:12-00:42  Punch (jab/cross)  18 (L6/R12)
+00:44-00:44  Jumping jack       1 (L0/R0)
+00:45-00:46  Punch (jab/cross)  2 (L1/R1)
+01:24-01:24  Squat              1 (both)
+01:52-01:52  Punch (jab/cross)  1 (L0/R1)
+03:14-03:32  Punch (jab/cross)  4 (L4/R0)
+03:37-03:38  High knee          2 (L1/R1)
+04:09-04:10  Punch (jab/cross)  2 (L2/R0)
+04:36-04:36  Jumping jack       1 (L0/R0)
+04:37-04:37  Punch (jab/cross)  1 (L1/R0)
+04:38-04:38  Jumping jack       1 (L0/R0)
+04:39-04:39  Punch (jab/cross)  1 (L1/R0)
+04:40-04:40  Jumping jack       1 (L0/R0)
+05:12-05:21  Punch (jab/cross)  4 (L3/R1)
+05:42-05:42  High knee          1 (L1/R0)
+05:42-05:50  Punch (jab/cross)  3 (L0/R3)
+05:56-05:58  High knee          3 (L0/R3)
+06:45-07:02  Push-up            5 (both)
+07:23-07:31  Punch (jab/cross)  2 (L2/R0)
+07:53-08:00  Squat              2 (both)
+11:21-11:21  Punch (jab/cross)  1 (L0/R1)
+11:27-11:32  Squat              2 (both)
+11:36-11:36  Punch (jab/cross)  1 (L1/R0)
+11:39-11:39  Squat              1 (both)
+11:44-11:45  Punch (jab/cross)  2 (L1/R1)
+12:07-12:07  Punch (jab/cross)  1 (L0/R1)
+13:24-13:25  Jumping jack       2 (L0/R0)
+13:34-13:34  High knee          1 (L0/R1)
+13:38-13:38  Punch (jab/cross)  1 (L0/R1)
+13:38-13:40  Jumping jack       2 (L0/R0)
+... 10 more blocks
+
+Asymmetries
+----------------------------------------
+None flagged (needs 10+ degrees of side kick difference).
+
+Diagnostics
+----------------------------------------
+Frames decoded      : 35979
+Frames analysed     : 17990 (12.5 fps target)
+Pose found          : 17228
+Calibrated frames   : 13839
+Accepted by gate    : 14984
+Rejected by gate    : 3111 (scale or subject jump)
+Subject switches    : 105
+Analysed up to      : 1439120ms
+Landmark count      : [0]
+Nose landmarks      : [0]
+
+Notes
+----------------------------------------
+Counts are heuristic motion detections from an in-memory pose model, not a validated
+fitness measurement. In a group video the app follows one person at a time.
+No video or images leave the device; nothing here is advice.

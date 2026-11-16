@@ -13,6 +13,7 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
+import com.example.fitpulseai.domain.ExerciseTotal
 import com.example.fitpulseai.domain.ExerciseType
 import com.example.fitpulseai.domain.FactualSummary
 import com.example.fitpulseai.domain.WorkoutTelemetry
@@ -54,6 +55,12 @@ class LocalSessionStorage(private val context: Context) {
     fun summary(id: String): Flow<FactualSummary?> = context.sessionStore.data.map { preferences ->
         preferences[stringPreferencesKey(factualSummaryKey(id))]?.let { parseSummary(it) }
     }
+    suspend fun saveTrainerReport(id: String, text: String) {
+        context.sessionStore.edit { it[stringPreferencesKey("trainer_report_$id")] = text }
+    }
+    fun trainerReport(id: String): Flow<String?> = context.sessionStore.data.map { preferences ->
+        preferences[stringPreferencesKey("trainer_report_$id")]
+    }
     fun telemetry(id: String): Flow<WorkoutTelemetry?> = context.sessionStore.data.map { preferences ->
         preferences[telemetryKey(id)]?.let { telemetryJson.decodeFromString<WorkoutTelemetry>(it) }
     }
@@ -73,7 +80,8 @@ data class ExerciseAggregate(
 data class FactualPayload(
     @SerialName("duration_seconds") val durationSeconds: Long,
     @SerialName("total_detected_reps") val totalReps: Int,
-    @SerialName("exercise_aggregates") val exercises: List<ExerciseAggregate>
+    @SerialName("exercise_aggregates") val exercises: List<ExerciseAggregate>,
+    @SerialName("observed_postures") val postures: List<String> = emptyList()
 )
 
 fun factualPayload(telemetry: WorkoutTelemetry): FactualPayload {
@@ -82,13 +90,33 @@ fun factualPayload(telemetry: WorkoutTelemetry): FactualPayload {
         require(parts.size == 2) { "Invalid recorded timestamp" }
         return parts[0].toLong() * 60 + parts[1].toLong()
     }
-    return FactualPayload(telemetry.durationSeconds, telemetry.totals.totalReps,
+    val totals = telemetry.exercises.ifEmpty {
         telemetry.timeline.groupBy { it.exercise }.map { (exercise, blocks) ->
-            ExerciseAggregate(exercise, blocks.sumOf { it.reps }, blocks.sumOf { it.leftReps },
-                blocks.sumOf { it.rightReps }, blocks.minBy { seconds(it.startTime) }.startTime,
-                blocks.maxBy { seconds(it.endTime) }.endTime)
-        }.sortedBy { seconds(it.firstDetected) })
+            ExerciseTotal(
+                exercise, blocks.sumOf { it.reps }, blocks.sumOf { it.leftReps }, blocks.sumOf { it.rightReps },
+                blocks.mapNotNull { it.average }.averageOrNull(),
+                blocks.mapNotNull { it.leftAverage }.averageOrNull(),
+                blocks.mapNotNull { it.rightAverage }.averageOrNull(),
+                blocks.mapNotNull { it.elevationRatio }.averageOrNull()
+            )
+        }
+    }
+    return FactualPayload(
+        telemetry.durationSeconds,
+        telemetry.totals.totalReps,
+        totals.map { total ->
+            val blocks = telemetry.timeline.filter { it.exercise == total.exercise }
+            ExerciseAggregate(
+                total.exercise, total.reps, total.leftReps, total.rightReps,
+                blocks.minByOrNull { seconds(it.startTime) }?.startTime ?: "00:00",
+                blocks.maxByOrNull { seconds(it.endTime) }?.endTime ?: "00:00"
+            )
+        }.sortedBy { seconds(it.firstDetected) },
+        telemetry.activities.map { "${it.startTime}-${it.endTime} ${it.posture.name.lowercase()}" }
+    )
 }
+
+private fun List<Float>.averageOrNull(): Float? = takeIf { it.isNotEmpty() }?.average()?.toFloat()
 
 class InvalidSummaryException(message: String, cause: Throwable? = null) : Exception(message, cause)
 
@@ -119,6 +147,8 @@ class GeminiSummaryRepository(private val context: Context) {
             systemInstruction = content { text(
                 "Write a concise factual workout recap using only the supplied JSON. Counts are detected estimates, not ground truth. " +
                     "Include duration and the detected exercise counts and left/right totals. " +
+                    "observed_postures lists stretches where the tracked person stood upright, was on the floor, or was bent over; " +
+                    "you may describe those phases, but never invent phases that are absent. " +
                     "First and last detections are boundaries, not continuous activity or a sequence of blocks; never infer chronology between them. " +
                     "Chronological entries may describe only those recorded first or last timestamps, or be empty. " +
                     "If no reps were detected, say so and return an empty chronological_entries array. " +

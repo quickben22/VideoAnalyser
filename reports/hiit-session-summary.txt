@@ -1,0 +1,139 @@
+FitPulse AI - session summary
+========================================
+Source            : hiit.mp4
+Sampling          : 12.5 fps
+Duration          : 44:26
+Total detections  : 106
+
+Exercise breakdown
+----------------------------------------
+Punch (jab/cross)    59   left  31 / right  28
+   peak elbow angle avg 173.7 deg
+High knee             2   left   1 / right   1
+   peak elevation avg -0.1 torso lengths
+Jumping jack         34   both sides, counted per repetition
+   ankle spread avg 0.9 torso widths
+Squat                 2   both sides, counted per repetition
+   knee bend avg 70.2 deg from straight
+Push-up               9   both sides, counted per repetition
+   elbow extension avg 168.4 deg
+
+What the camera saw
+----------------------------------------
+00:00-08:35  Standing work
+08:36-08:55  Standing work
+09:28-09:39  Standing work
+09:40-09:47  Standing work
+09:52-11:25  Standing work
+11:26-11:58  Standing work
+12:00-12:25  Floor work (plank / push-up position)
+12:33-12:45  Standing work
+12:56-13:05  Standing work
+13:06-13:10  Floor work (plank / push-up position)
+13:10-14:02  Standing work
+14:06-14:49  Floor work (plank / push-up position)
+15:32-15:38  Standing work
+15:41-16:36  Standing work
+16:37-16:54  Floor work (plank / push-up position)
+16:55-17:03  Standing work
+17:05-17:26  Floor work (plank / push-up position)
+17:47-18:09  Standing work
+18:10-18:14  Floor work (plank / push-up position)
+18:14-19:26  Standing work
+19:32-20:16  Floor work (plank / push-up position)
+20:16-20:24  Standing work
+20:25-21:01  Standing work
+21:04-21:16  Standing work
+21:18-22:00  Standing work
+22:00-22:47  Floor work (plank / push-up position)
+22:54-23:35  Standing work
+23:37-23:47  Standing work
+23:48-24:53  Floor work (plank / push-up position)
+25:00-25:09  Standing work
+25:09-26:51  Floor work (plank / push-up position)
+26:58-27:45  Floor work (plank / push-up position)
+27:49-28:05  Floor work (plank / push-up position)
+28:05-28:10  Standing work
+28:10-28:46  Floor work (plank / push-up position)
+28:46-29:00  Standing work
+29:05-29:10  Standing work
+29:23-29:29  Standing work
+29:51-29:57  Standing work
+29:57-30:20  Floor work (plank / push-up position)
+30:24-30:55  Standing work
+30:59-31:06  Standing work
+31:19-31:28  Standing work
+32:05-32:13  Standing work
+32:14-32:40  Floor work (plank / push-up position)
+32:46-33:21  Standing work
+33:46-33:53  Standing work
+34:27-34:38  Standing work
+34:38-34:59  Floor work (plank / push-up position)
+35:00-35:13  Floor work (plank / push-up position)
+35:13-35:41  Standing work
+35:58-36:03  Standing work
+36:04-36:20  Standing work
+36:58-37:06  Standing work
+37:11-37:16  Floor work (plank / push-up position)
+37:16-37:38  Floor work (plank / push-up position)
+37:38-38:10  Standing work
+38:18-42:40  Standing work
+42:44-42:51  Standing work
+42:53-43:40  Standing work
+
+Recorded blocks
+----------------------------------------
+00:45-00:45  Punch (jab/cross)  1 (L0/R1)
+01:10-01:10  Punch (jab/cross)  1 (L0/R1)
+01:12-01:12  High knee          1 (L0/R1)
+04:02-04:02  Punch (jab/cross)  1 (L0/R1)
+07:03-07:16  Punch (jab/cross)  4 (L0/R4)
+07:44-07:45  Punch (jab/cross)  2 (L1/R1)
+08:01-08:22  Punch (jab/cross)  9 (L0/R9)
+10:28-10:38  Jumping jack       7 (L0/R0)
+10:42-10:42  Punch (jab/cross)  1 (L0/R1)
+11:14-11:14  Squat              1 (both)
+11:24-11:24  Jumping jack       1 (L0/R0)
+11:46-11:52  Punch (jab/cross)  2 (L1/R1)
+12:40-12:40  High knee          1 (L1/R0)
+12:42-12:42  Jumping jack       1 (L0/R0)
+13:17-13:39  Punch (jab/cross)  7 (L6/R1)
+13:50-13:50  Punch (jab/cross)  1 (L0/R1)
+15:49-15:52  Punch (jab/cross)  2 (L2/R0)
+16:18-16:20  Punch (jab/cross)  2 (L2/R0)
+16:27-16:27  Jumping jack       1 (L0/R0)
+18:46-18:46  Punch (jab/cross)  1 (L1/R0)
+21:53-21:57  Jumping jack       2 (L0/R0)
+21:59-21:59  Punch (jab/cross)  1 (L1/R0)
+24:42-24:42  Push-up            1 (both)
+26:11-26:11  Push-up            1 (both)
+26:35-26:35  Push-up            1 (both)
+27:47-27:57  Push-up            2 (both)
+28:40-28:40  Push-up            1 (both)
+29:07-29:07  Punch (jab/cross)  1 (L0/R1)
+30:16-30:16  Push-up            1 (both)
+32:38-32:38  Push-up            1 (both)
+... 10 more blocks
+
+Asymmetries
+----------------------------------------
+None flagged (needs 10+ degrees of side kick difference).
+
+Diagnostics
+----------------------------------------
+Frames decoded      : 79986
+Frames analysed     : 26662 (12.5 fps target)
+Pose found          : 26031
+Calibrated frames   : 25114
+Accepted by gate    : 25123
+Rejected by gate    : 1588 (scale or subject jump)
+Subject switches    : 49
+Analysed up to      : 2666200ms
+Landmark count      : [33]
+Nose landmarks      : [1]
+
+Notes
+----------------------------------------
+Counts are heuristic motion detections from an in-memory pose model, not a validated
+fitness measurement. In a group video the app follows one person at a time.
+No video or images leave the device; nothing here is advice.

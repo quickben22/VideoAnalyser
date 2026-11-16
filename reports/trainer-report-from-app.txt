@@ -1,0 +1,39 @@
+FitPulse AI - Kratki izvještaj trenera
+========================================
+Trajanje: 23:41   |   Ukupno ponavljanja: 105
+
+Cilj treninga
+----------------------------------------
+Kružni trening koji kombinira kardio kondiciju i snagu kroz više mišićnih skupina.
+
+Što se dogodilo
+----------------------------------------
+- 00:00-10:11  Rad u stojećem položaju
+- 13:00-14:29  Rad u stojećem položaju
+- 14:29-16:42  Rad na podu
+- 17:00-18:34  Rad u stojećem položaju
+- 18:34-20:37  Rad na podu
+- 21:28-22:44  Rad u stojećem položaju
+
+Vježbe i ponavljanja
+----------------------------------------
+  Boksački udarci     58 (26 L / 32 D)
+  Visoka koljena      20 (12 L / 8 D)
+  Skokovi             11
+  Sklekovi             9
+  Čučnjevi             7
+
+Mišićne skupine
+----------------------------------------
+- Boksački udarci: prsa, ramena, ruke i core.
+- Skokovi: cijelo tijelo i kardio.
+- Čučnjevi: noge i gluteusi.
+- Visoka koljena: noge, kukovi i core; snažan kardio.
+- Sklekovi: prsa, ruke i core.
+
+Napomena
+----------------------------------------
+Nema izražene asimetrije između lijeve i desne strane.
+Brojevi su približne procjene automatske detekcije pokreta, ne validirano mjerenje.
+
+Zaključak: Obuhvaćeno je 5 vježbi. Opterećenje je raspoređeno kroz kardio i snagu, bez prevelikog naglaska na jednu mišićnu skupinu.

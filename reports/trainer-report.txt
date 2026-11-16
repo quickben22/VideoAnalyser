@@ -1,0 +1,61 @@
+FitPulse AI - Trainer Session Report
+========================================
+Class: Full-body circuit training (Sanja Zuljevic - "Kruzni trening za cijelo tijelo")
+Format: Group class (5 participants), one participant tracked by the camera
+Duration: 23:41 | Activity sampled at 12.5 fps | 105 repetitions logged
+
+Goal of the session
+----------------------------------------
+A full-body circuit combining cardiovascular conditioning, bodyweight strength and
+boxing-style arm work, finished with floor mobility and a cool-down. The aim was to
+keep the heart rate up while rotating through all major muscle groups, so the whole
+body gets worked in one session rather than isolating a single area.
+
+What happened in the session
+----------------------------------------
+- Warm-up (0:00-1:40): light standing work leading into boxing-style jab/cross
+  punches and jumping jacks to raise the heart rate and loosen the shoulders.
+- Cardio & strength block (3:30-8:40): marching/high knees, then a floor push-up
+  set, followed by loaded lower-body work (lunges/squats with dumbbells).
+- Main circuit (9:15-13:12): high knees with dumbbells at the chest, then
+  wide-stance overhead dumbbell squats/presses.
+- Floor mobility (15:00-21:27): prone holds, cat-cow/child's pose and short
+  push-up-style floor segments for core and shoulder stability.
+- Cool-down (22:00-23:36): floor stretches and easy standing work.
+
+Exercises logged (detected repetitions)
+----------------------------------------
+  Punch (jab/cross) .... 58   (26 left / 32 right) - avg peak elbow angle 170.8 deg
+  High knee ............ 20   (12 left / 8 right)
+  Jumping jack ......... 11   (ankle spread ~1.2 torso widths)
+  Push-up .............. 9    (avg elbow extension 167.9 deg)
+  Squat ................ 7    (avg knee bend 78.0 deg)
+
+Muscle groups worked
+----------------------------------------
+- Punch (jab/cross): chest (pectorals), shoulders (deltoids), triceps and
+  core/obliques for rotation.
+- Jumping jack: full-body conditioning - shoulders, hips, legs and cardiovascular
+  system.
+- High knee: hip flexors, quadriceps, calves and lower core; strong cardio demand.
+- Squat (incl. overhead press variation): quadriceps, glutes, hamstrings, core and
+  shoulders/triceps for the overhead press.
+- Push-up: chest, triceps, front shoulders and core (plank engagement).
+- Floor work / holds: core, shoulders, glutes and hip flexors (stability/mobility).
+
+Observations & notes for the trainer
+----------------------------------------
+- Overall balance looked reasonable: mostly standing work with regular floor
+  segments, giving a mix of upright cardio and ground-based strength/mobility.
+- No significant left/right asymmetry was flagged. Punches leaned slightly to the
+  right (32 vs 26) and high knees slightly to the left (12 vs 8), which is within
+  a normal range for a group class.
+- Punching volume was the highest of the session (58 reps), consistent with the
+  boxing warm-up and arm-work blocks in the video.
+- Repetition counts are heuristic estimates from a single tracked participant in
+  a five-person, camera-cut video; some reps (especially in long standing blocks)
+  may be undercounted. Treat them as approximate, not a validated measurement.
+
+Summary: A well-rounded 24-minute full-body circuit covering cardio, boxing-style
+arm work, lower-body and pushing strength, and floor mobility - suitable as a
+complete conditioning session with no single muscle group over- or under-trained.

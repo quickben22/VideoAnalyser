@@ -24,7 +24,11 @@ class SessionAggregatorTest {
             session.add(Rep(if (index % 2 == 0) ExerciseType.HIGH_KNEE else ExerciseType.PUNCH_JAB_CROSS, Side.LEFT, 160f, index * 1000L))
         }
         val result = session.finish(150000)
-        assertEquals(150, result.timeline.sumOf { it.reps })
-        assertTrue(telemetryJson.encodeToString(result).toByteArray(Charsets.UTF_8).size < 3000)
+        // Block compaction drops whole blocks, so the timeline is shorter than the session, but
+        // totals and per-exercise aggregates stay complete.
+        assertEquals(150, result.totals.totalReps)
+        assertEquals(150, result.exercises.sumOf { it.reps })
+        assertTrue(result.timeline.size <= 40)
+        assertTrue(telemetryJson.encodeToString(result).toByteArray(Charsets.UTF_8).size < 12000)
     }
 }

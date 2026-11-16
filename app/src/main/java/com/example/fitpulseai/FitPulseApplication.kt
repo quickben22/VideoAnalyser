@@ -9,6 +9,7 @@ class FitPulseApplication : Application() {
         super.onCreate()
         if (FirebaseApp.getApps(this).isNotEmpty()) {
             FirebaseAppCheck.getInstance().installAppCheckProviderFactory(appCheckProvider())
+            dumpAppCheckToken(this)
         }
     }
 }

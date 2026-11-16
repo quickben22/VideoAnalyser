@@ -30,6 +30,7 @@ import com.example.fitpulseai.camera.CameraPipeline
 import com.example.fitpulseai.domain.PoseFrame
 import com.example.fitpulseai.data.SummaryPhase
 import com.example.fitpulseai.data.factualPayload
+import com.example.fitpulseai.data.label
 import com.example.fitpulseai.ui.WorkoutViewModel
 import com.google.mlkit.vision.pose.PoseLandmark as L
 import java.util.Locale
@@ -48,7 +49,7 @@ private fun FitPulseApp(vm: WorkoutViewModel = viewModel()) {
     var permission by remember { mutableStateOf(ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) }
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { permission = it }
     if (state.summary != null) {
-        Summary(state, vm.firebaseConfigured, vm::retry, vm::newWorkout)
+        Summary(state, vm.firebaseConfigured, vm::retry, vm::newWorkout, vm::generateReport)
     } else if (!permission) {
         Column(Modifier.fillMaxSize().padding(24.dp), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
             Text("Camera access is needed to analyze your workout. Video is never recorded.")
@@ -120,8 +121,9 @@ private fun Skeleton(frame: PoseFrame?, front: Boolean) {
 }
 
 @Composable
-private fun Summary(state: com.example.fitpulseai.ui.WorkoutState, configured: Boolean, retry: () -> Unit, start: () -> Unit) {
+private fun Summary(state: com.example.fitpulseai.ui.WorkoutState, configured: Boolean, retry: () -> Unit, start: () -> Unit, generateReport: () -> Unit) {
     val summary = state.summary ?: return
+    val trainerReportText = state.trainerReport
     Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding().verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Text("Workout summary", style = MaterialTheme.typography.headlineMedium)
         state.error?.let { Text(it, color = MaterialTheme.colorScheme.error) }
@@ -133,10 +135,24 @@ private fun Summary(state: com.example.fitpulseai.ui.WorkoutState, configured: B
             Text("Detected exercises", style = MaterialTheme.typography.titleLarge)
             if (summary.timeline.isEmpty()) Text("No reps detected.")
             factualPayload(summary).exercises.forEach { exercise ->
-                Text("${exercise.exercise.name.replace('_', ' ')} · ${exercise.detectedReps} detected (L ${exercise.leftReps}, R ${exercise.rightReps})")
+                val sides = when (exercise.exercise) {
+                    com.example.fitpulseai.domain.ExerciseType.SQUAT,
+                    com.example.fitpulseai.domain.ExerciseType.PUSH_UP -> "both sides"
+                    else -> "L ${exercise.leftReps}, R ${exercise.rightReps}"
+                }
+                Text("${exercise.exercise.label()} · ${exercise.detectedReps} detected ($sides)")
                 Text("First detection: ${exercise.firstDetected} · Last detection: ${exercise.lastDetected}")
             }
         } }
+        if (trainerReportText == null) {
+            Button(onClick = generateReport) { Text("Generate report") }
+        } else {
+            Card(Modifier.fillMaxWidth()) { Column(Modifier.padding(16.dp)) {
+                Text("Trainer report", style = MaterialTheme.typography.titleLarge)
+                Spacer(Modifier.height(8.dp))
+                Text(trainerReportText)
+            } }
+        }
         when (state.summaryStatus.phase) {
             SummaryPhase.PENDING -> Text("AI recap pending; it will start when connected.")
             SummaryPhase.GENERATING -> Text("Generating AI recap…")
